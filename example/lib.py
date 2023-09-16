@@ -5,17 +5,17 @@ so_file = "../bin/bus.so"
 lib = CDLL(so_file)
 
 # Declare the function signature
-lib.solucion.argtypes = [
+lib.solution.argtypes = [
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),  # U argument type
     ctypes.POINTER(ctypes.POINTER(ctypes.c_int)),  # S argument type
     ctypes.c_int,  # n_users argument type
     ctypes.c_int  # n_seats argument type
 ]
-lib.solucion.restype = ctypes.POINTER(ctypes.c_int)  # Return type
+lib.solution.restype = ctypes.POINTER(ctypes.c_int)  # Return type
 
 
 def bus_sitter(U, A):
-    sol = lib.solucion(
+    sol = lib.solution(
         (ctypes.POINTER(ctypes.c_int) * len(U))(*[ctypes.cast((ctypes.c_int * len(row))(*row), ctypes.POINTER(ctypes.c_int)) for row in U]),
         (ctypes.POINTER(ctypes.c_int) * len(A))(*[ctypes.cast((ctypes.c_int * len(row))(*row), ctypes.POINTER(ctypes.c_int)) for row in A]),
         len(U), len(A)
