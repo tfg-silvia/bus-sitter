@@ -49,30 +49,30 @@ int main() {
 	print_matrix(U, N_USERS, N_USERS);
 
 	// Available seats and aisles
-	int S_tmp[N_SITS][N_SITS] = {
+	int S_tmp[N_SEATS][N_SEATS] = {
 		{-1, 0, -1, -1},
 		{ 0, 0, -1, -1},
 		{ 0, 0, -1, -1},
 		{ 0, 0,  0, -1}
 	};
 
-	int** S = (int**)malloc(N_SITS*sizeof(int*));
-	for(i = 0; i < N_SITS; i++){
-		S[i] = (int*)malloc(N_SITS*sizeof(int));
+	int** S = (int**)malloc(N_SEATS*sizeof(int*));
+	for(i = 0; i < N_SEATS; i++){
+		S[i] = (int*)malloc(N_SEATS*sizeof(int));
 
-		memcpy(S[i], S_tmp[i], N_SITS*sizeof(int));
+		memcpy(S[i], S_tmp[i], N_SEATS*sizeof(int));
 	}
 
 	x_best = (int *)malloc((N_USERS + 1) * sizeof(int));
 
-	solution(U, S, x_best, N_USERS, N_SITS);
+	solution(U, S, x_best, N_USERS, N_SEATS);
 	
 	free(x_best);
 	for(i = 0; i < N_USERS; i++){
 		free(U[i]);
 	}
 	free(U);
-	for(i = 0; i < N_SITS; i++){
+	for(i = 0; i < N_SEATS; i++){
 		free(S[i]);
 	}
 	free(S);

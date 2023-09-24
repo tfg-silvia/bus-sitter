@@ -5,14 +5,14 @@
 #include <stdbool.h>
 
 #define USERS 8
-#define SITS 4
+#define SEATS 4
 
 // functions prototypes
-bool can_sit(int[][USERS], int[][SITS], int *, int);
+bool can_sit(int[][USERS], int[][SEATS], int *, int);
 int value(int *, int);
-void process(int *, int);
+void process(int[][SEATS], int*, int, int);
 
-void OPTIMAL_SITS(int[][USERS], int[][SITS], int, int *, int *, int *);
+void OPTIMAL_SEATS(int[][USERS], int[][SEATS], int, int *, int *, int *);
 
 void printU(int matrix[][USERS]) {
 	int i, j;
@@ -28,16 +28,16 @@ void printU(int matrix[][USERS]) {
 	printf("\n");
 }
 
-void printA(int matrix[][SITS]) {
+void printA(int matrix[][SEATS]) {
 	int i, j;
 
 	printf("{");
-	for (i = 0; i < SITS; i++) {
+	for (i = 0; i < SEATS; i++) {
 		printf("{");
-		for (j = 0; j < SITS-1; j++) {
+		for (j = 0; j < SEATS-1; j++) {
 			printf("%d, ", matrix[i][j]);
 		}
-		printf("%d},\n", matrix[i][SITS-1]);
+		printf("%d},\n", matrix[i][SEATS-1]);
 	}
 	printf("\n");
 }
@@ -50,8 +50,8 @@ int main() {
 	// Incompatibilidad entre USERS
 	int U[USERS][USERS] = { {1, 0, 0, 1, 1, 1, 0, 1}, {0, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 1, 1, 1, 1, 1}, {1, 0, 1, 1, 0, 1, 0, 0}, {1, 0, 1, 0, 1, 0, 1, 1}, {1, 0, 1, 1, 1, 1, 0, 1}, {0, 0, 1, 0, 1, 0, 1, 1}, {1, 0, 1, 1, 1, 1, 1, 1}};
 
-	// SITS disponibles/no disponibles
-	int S[SITS][SITS] = { {-1, 0, -1, -1}, {0, 0, -1, -1}, {0, 0, -1, -1}, {0, 0, 0, -1}};
+	// SEATS disponibles/no disponibles
+	int S[SEATS][SEATS] = { {-1, 0, -1, -1}, {0, 0, -1, -1}, {0, 0, -1, -1}, {0, 0, 0, -1}};
 
 	printU(U);
 
@@ -65,11 +65,11 @@ int main() {
 
 	// Solucion OPTIMA
 	v_best = 0;
-	OPTIMAL_SITS(U, S, 1, x, x_best, &v_best);
+	OPTIMAL_SEATS(U, S, 1, x, x_best, &v_best);
 
-	// Presenta los SITS que ocuparan los USERS
-	process(x_best, USERS);
-	printf("\t\t Maximum number of occupied sits: %d\n\n\n\n", v_best);
+	// Presenta los SEATS que ocuparan los USERS
+	process(S, x_best, USERS, SEATS);
+	printf("\t\t Maximum number of occupied SEATS: %d\n\n\n\n", v_best);
 
 	// Release memory
 	free(x);
@@ -79,13 +79,13 @@ int main() {
 }
 
 // function to work out the weight linked to the sequence of decisions x
-bool can_sit(int U[][USERS], int S[][SITS], int *x, int k) {
+bool can_sit(int U[][USERS], int S[][SEATS], int *x, int k) {
 	int i, pos, n_row, n_col;
 
 	// Calcula coordenadas de la matrix
 	pos = x[k];
-	n_row = pos / SITS;
-	n_col = pos - n_row * SITS;
+	n_row = pos / SEATS;
+	n_col = pos - n_row * SEATS;
 	// // printf("Asiento: %d, coordenadS[%d][%d]\n", pos, n_row, n_col);
 
 	// Chequear si el asiento puede ser usado por un usuario
@@ -103,7 +103,7 @@ bool can_sit(int U[][USERS], int S[][SITS], int *x, int k) {
 		}
 
 	// Chequear si el asiento x[k] del pasajero k es compatible
-	//  con los SITS asignados a los pasajeros anteriores
+	//  con los SEATS asignados a los pasajeros anteriores
 	// printU(U);
 	for (int i = 1; i < k; i++) {
 		// printf("abs(x[%d] (%d) - %d) == 1 && (U[%d][%d] (%d) == 1)\n", i, x[i], pos, i, k, U[i][k]);
@@ -126,28 +126,43 @@ int value(int *x, int k) {
 }
 
 // Presenta la secuencia de decisiones
-void process(int *x, int n) {
+void process(int S[][SEATS], int *x, int n_usuarios, int n_asientos) {
 	int i;
 	printf("\n\t< ");
-	for (i = 1; i <= n; i++) {
+	for (i = 1; i <= n_usuarios; i++) {
 		printf("%d ", x[i]);
 	}
 	printf(">");
+
+	int j, k;
+	for (i = 0; i < n_asientos; i++) {
+		for (j = 0; j < n_asientos; j++) {
+			if(S[i][j] == -1) {
+				printf(" - ");
+			} else {
+				for(k = 1; k <= n_usuarios; k++) {
+					if(x[k] == i*n_asientos + j) {
+						printf(" %d ", k);
+					}
+				}
+			}
+		}
+		printf("\n");
+	}
 }
 
 // backtracking function que proporciona la SOLUCION OPTIMA
-void OPTIMAL_SITS(int U[][USERS], int S[][SITS], int k, int *x, int *x_best, int *v_best) {
+void OPTIMAL_SEATS(int U[][USERS], int S[][SEATS], int k, int *x, int *x_best, int *v_best) {
 	int i, aux;
 	x[k] = -1;
-	while (x[k] < SITS * SITS - 1) {
+	while (x[k] < SEATS * SEATS - 1) {
 		x[k] = x[k] + 1;
-		bool can_sit = can_sit(U, S, x, k);
 
 		// printU(U);
 		// printA(A);
 		// printf("x[%d]=%d\tcan_sit: %d\n\n", k, x[k], can_sit);
 
-		if (can_sit) {
+		if (can_sit(U, S, x, k)) {
 			if (k == USERS) {
 				aux = value(x, k);
 				if (aux > *v_best) {
@@ -156,7 +171,7 @@ void OPTIMAL_SITS(int U[][USERS], int S[][SITS], int k, int *x, int *x_best, int
 				}
 			}
 			if (k < USERS)
-				OPTIMAL_SITS(U, S, k + 1, x, x_best, v_best);
+				OPTIMAL_SEATS(U, S, k + 1, x, x_best, v_best);
 		}
 	}
 }
