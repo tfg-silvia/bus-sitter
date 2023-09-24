@@ -6,7 +6,7 @@
 #include "lib/algorithm.h"
 #include "consts.h"
 
-int* solution(int** U, int** A, int* x_best, int, int);
+int* solution(int** U, int** A, int, int);
 
 // main function
 int main() {
@@ -63,9 +63,7 @@ int main() {
 		memcpy(S[i], S_tmp[i], N_SEATS*sizeof(int));
 	}
 
-	x_best = (int *)malloc((N_USERS + 1) * sizeof(int));
-
-	solution(U, S, x_best, N_USERS, N_SEATS);
+	x_best = solution(U, S, N_USERS, N_SEATS);
 	
 	free(x_best);
 	for(i = 0; i < N_USERS; i++){
@@ -80,17 +78,21 @@ int main() {
 	return 0;
 }
 
-int* solution(int** U, int** S, int* x_best, int n_users, int n_seats){
+int* solution(int** U, int** S, int n_users, int n_seats){
+	int* x_best = (int *)malloc((n_users + 1) * sizeof(int));
+
+	// print_matrix(S, n_seats, n_seats);
+
 	// optimal solution
 	int v_best = 0;
 	int* x = (int *)malloc((N_USERS + 1) * sizeof(int));
 	sit_users(U, S, 1, x, x_best, &v_best, n_users, n_seats);
 
-	process(S, x_best, n_users, n_seats);
-	printf("\t\t Maximum number of occupied seats: %d\n\n\n\n", v_best);
+	// process(S, x_best, n_users, n_seats);
+	// printf("\t\t Maximum number of occupied seats: %d\n\n\n\n", v_best);
 
 	// Release memory
-	printf("End of program\n");
+	// printf("End of program\n");
 
 	free(x);
 

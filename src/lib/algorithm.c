@@ -15,6 +15,8 @@
 bool can_sit(int** U, int** S, int *x, int k, int n_users, int n_seats) {
 	int i, pos, n_row, n_col;
 
+	// print_matrix(S, n_seats, n_seats);
+
 	// Calculate the matrix coordinates
 	pos = x[k];
 	n_row = pos / n_seats;
@@ -73,11 +75,10 @@ void sit_users(int** U, int** S, int k, int *x, int *x_best, int *v_best, int n_
 	x[k] = -1;
 	while (x[k] < n_seats * n_seats - 1) {
 		x[k] = x[k] + 1;
-        bool can_sit_debug = can_sit(U, S, x, k, n_users, n_seats);
         
         // printf("x[%d]=%d\tcan_sit: %d\n\n\n", k, x[k], can_sit);
         
-        if (can_sit_debug) {
+        if (can_sit(U, S, x, k, n_users, n_seats)) {
             if (k == n_users) {
                 aux = value(x, k);
                 if (aux > *v_best) {

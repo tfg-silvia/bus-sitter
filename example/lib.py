@@ -1,5 +1,6 @@
 import ctypes
 from ctypes import *
+import numpy as np
 
 so_file = "../bin/bus.so"
 lib = CDLL(so_file)
@@ -14,11 +15,12 @@ lib.solution.argtypes = [
 lib.solution.restype = ctypes.POINTER(ctypes.c_int)  # Return type
 
 
-def bus_sitter(U, A):
+def bus_sitter(U: list[list[int]], A: list[list[int]]) -> list[int]:
     sol = lib.solution(
         (ctypes.POINTER(ctypes.c_int) * len(U))(*[ctypes.cast((ctypes.c_int * len(row))(*row), ctypes.POINTER(ctypes.c_int)) for row in U]),
         (ctypes.POINTER(ctypes.c_int) * len(A))(*[ctypes.cast((ctypes.c_int * len(row))(*row), ctypes.POINTER(ctypes.c_int)) for row in A]),
-        len(U), len(A)
+        ctypes.c_int(len(U)),
+        ctypes.c_int(len(A))
     )
 
-    return [sol[i] for i in range(1, len(U) + 1)]
+    return [sol[i] for i in range(1, len(U))]
