@@ -45,9 +45,6 @@ int main() {
 		memcpy(U[i], U_tmp[i], N_USERS*sizeof(int));
 	}
 
-	//users_to_matrix(users, U, N_USERS);
-	print_matrix(U, N_USERS, N_USERS);
-
 	// Available seats and aisles
 	int S_tmp[N_SEATS][N_SEATS] = {
 		{-1, 0, -1, -1},
@@ -64,7 +61,7 @@ int main() {
 	}
 
 	x_best = solution(U, S, N_USERS, N_SEATS);
-	
+
 	free(x_best);
 	for(i = 0; i < N_USERS; i++){
 		free(U[i]);
@@ -88,8 +85,8 @@ int* solution(int** U, int** S, int n_users, int n_seats){
 	int* x = (int *)malloc((N_USERS + 1) * sizeof(int));
 	sit_users(U, S, 1, x, x_best, &v_best, n_users, n_seats);
 
-	// process(S, x_best, n_users, n_seats);
-	// printf("\t\t Maximum number of occupied seats: %d\n\n\n\n", v_best);
+	process(S, x_best, n_users, n_seats);
+	printf("\t\t Maximum number of occupied seats: %d\n\n\n\n", v_best);
 
 	// Release memory
 	// printf("End of program\n");

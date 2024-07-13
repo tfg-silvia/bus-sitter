@@ -48,12 +48,24 @@ int main() {
 	int *x, *x_best, v_best, *P, *B;
 
 	// Incompatibilidad entre USERS
-	int U[USERS][USERS] = { {1, 0, 0, 1, 1, 1, 0, 1}, {0, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 1, 1, 1, 1, 1}, {1, 0, 1, 1, 0, 1, 0, 0}, {1, 0, 1, 0, 1, 0, 1, 1}, {1, 0, 1, 1, 1, 1, 0, 1}, {0, 0, 1, 0, 1, 0, 1, 1}, {1, 0, 1, 1, 1, 1, 1, 1}};
+	int U[USERS][USERS] = { 
+		{1, 0, 0, 1, 1, 1, 0, 1}, 
+		{0, 1, 0, 0, 0, 0, 0, 0}, 
+		{0, 0, 1, 1, 1, 1, 1, 1}, 
+		{1, 0, 1, 1, 0, 1, 0, 0}, 
+		{1, 0, 1, 0, 1, 0, 1, 1}, 
+		{1, 0, 1, 1, 1, 1, 0, 1}, 
+		{0, 0, 1, 0, 1, 0, 1, 1}, 
+		{1, 0, 1, 1, 1, 1, 1, 1}
+	};
 
 	// SEATS disponibles/no disponibles
-	int S[SEATS][SEATS] = { {-1, 0, -1, -1}, {0, 0, -1, -1}, {0, 0, -1, -1}, {0, 0, 0, -1}};
-
-	printU(U);
+	int S[SEATS][SEATS] = { 
+		{-1, 0, -1, -1}, 
+		{ 0, 0, -1, -1}, 
+		{ 0, 0, -1, -1}, 
+		{ 0, 0,  0, -1}
+	};
 
 	//
 	// Vectores x y x_best tienen una dimension mas [0 .. n]
@@ -132,7 +144,7 @@ void process(int S[][SEATS], int *x, int n_usuarios, int n_asientos) {
 	for (i = 1; i <= n_usuarios; i++) {
 		printf("%d ", x[i]);
 	}
-	printf(">");
+	printf(">\n\n");
 
 	int j, k;
 	for (i = 0; i < n_asientos; i++) {

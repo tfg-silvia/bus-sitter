@@ -40,8 +40,6 @@ void process(int** S, int *x, int n_usuarios, int n_asientos) {
 	}
 	printf(">\n\n");
 
-	print_matrix(S, n_asientos, n_asientos);
-
 	int j, k;
 	for (i = 0; i < n_asientos; i++) {
 		for (j = 0; j < n_asientos; j++) {
