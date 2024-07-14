@@ -35,7 +35,7 @@ void users_to_matrix(User *users, int** matrix, int n_users) {
 void process(int** S, int *x, int n_usuarios, int n_asientos) {
 	int i;
 	printf("\n\t< ");
-	for (i = 1; i <= n_usuarios; i++) {
+	for (i = 0; i < n_usuarios; i++) {
 		printf("%d ", x[i]);
 	}
 	printf(">\n\n");
