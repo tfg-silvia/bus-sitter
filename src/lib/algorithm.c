@@ -66,16 +66,18 @@ int value(int *x, int k) {
 /// @param n_users Number of users.
 /// @param n_seats Number of seats.
 void sit_users(int** U, int** S, int k, int *x, int *x_best, int *v_best, int n_users, int n_seats) {
-    int i, aux;
+    int aux;
     x[k] = -1;
 
     // Base cases for 1, 2, 3, and 4 users
     if (n_users <= 4) {
         for (int row = 0; row < n_users; row++) {
-            for (int col = 0; col < n_seats; col++) {
+            bool seat_found = false;
+            for (int col = 0; col < n_seats && !seat_found; col++) {
                 int pos = row * n_seats + col;
                 if (S[row][col] == 0) { // check if the seat is available
                     x[row] = pos; // 0-based indexing
+                    seat_found = true;
                 } else {
                     x[row] = -1; // invalid seat
                 }
@@ -114,3 +116,4 @@ void sit_users(int** U, int** S, int k, int *x, int *x_best, int *v_best, int n_
         }
     }
 }
+
