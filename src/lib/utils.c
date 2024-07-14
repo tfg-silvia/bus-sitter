@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 /// @brief Converts an array of users to an adjacency matrix
 /// @param users Array of users
@@ -32,30 +33,36 @@ void users_to_matrix(User *users, int** matrix, int n_users) {
 /// @param n_usuarios Number of users in the decision array
 /// @param n_asientos Number of seats in the Seats matrix
 /// @return void
-void process(int** S, int *x, int n_usuarios, int n_asientos) {
-	int i;
-	printf("\n\t< ");
-	for (i = 1; i <= n_usuarios; i++) {
-		printf("%d ", x[i]);
-	}
-	printf(">\n\n");
+void process(int** S, int *x, int n_users, int n_seats) {
+    int i, j, k;
+    printf("\n\t< ");
+    for (i = 0; i < n_users; i++) {
+        printf("%d ", x[i]);
+    }
+    printf(">\n\n");
 
-	int j, k;
-	for (i = 0; i < n_asientos; i++) {
-		for (j = 0; j < n_asientos; j++) {
-			if(S[i][j] == -1) {
-				printf(" - ");
-			} else {
-				for(k = 1; k <= n_usuarios; k++) {
-					if(x[k] == i*n_asientos + j) {
-						printf(" %d ", k);
-					}
-				}
-			}
-		}
-		printf("\n");
-	}
+    for (i = 0; i < n_seats; i++) {
+        for (j = 0; j < n_seats; j++) {
+            if (S[i][j] == -1) {
+                printf(" - ");
+            } else {
+                bool user_found = false;
+                for (k = 0; k < n_users; k++) {
+                    if (x[k] == i * n_seats + j) {
+                        printf(" %d ", k);
+                        user_found = true;
+                        break;
+                    }
+                }
+                if (!user_found) {
+                    printf(" _ ");
+                }
+            }
+        }
+        printf("\n");
+    }
 }
+
 
 /// @brief Prints a matrix
 /// @param matrix Matrix to print
